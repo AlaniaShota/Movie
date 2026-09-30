@@ -11,11 +11,16 @@ const tmdb = axios.create({
   },
 });
 
+const upcoming = "upcoming";
+
 export async function getPopularMovies(page = 1): Promise<Movie[]> {
   try {
-    const { data } = await tmdb.get<PopularMoviesResponse>("/movie/popular", {
-      params: { page },
-    });
+    const { data } = await tmdb.get<PopularMoviesResponse>(
+      `/movie/${upcoming}`,
+      {
+        params: { page },
+      },
+    );
     return data.results;
   } catch (error) {
     if (axios.isAxiosError(error)) {

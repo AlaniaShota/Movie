@@ -35,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${jost.variable} ${montserrat.variable} ${barlow.variable} h-full antialiased`}
+      className={`${jost.variable} ${montserrat.variable} ${barlow.variable}  antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <SmoothScroll />
