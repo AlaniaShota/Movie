@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import Card from "../components/card";
+
 import { isMovieCategory } from "../lib/tmdb";
+import MovieList from "../components/movieList";
 
 type CategoryPageProps = {
   params: Promise<{ category: string }>;
@@ -13,5 +14,5 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  return <Card category={category} />;
+  return <MovieList category={category} />;
 }
