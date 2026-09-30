@@ -1,19 +1,5 @@
 import axios from "axios";
-
-export type Movie = {
-  id: number;
-  title: string;
-  poster_path: string | null;
-  overview: string;
-  vote_average: number;
-};
-
-type PopularMoviesResponse = {
-  page: number;
-  results: Movie[];
-  total_pages: number;
-  total_results: number;
-};
+import { Movie, PopularMoviesResponse } from "./movie";
 
 export const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 

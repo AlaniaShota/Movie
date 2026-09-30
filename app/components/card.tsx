@@ -1,11 +1,15 @@
 import Image from "next/image";
-import { getPopularMovies, IMAGE_BASE_URL } from "../api/popularMovie";
+import { getPopularMovies, IMAGE_BASE_URL } from "../lib/tmdb";
+
 
 export const revalidate = 3600;
+
 export default async function Card() {
+
   const movies = await getPopularMovies();
+  
   return (
-    <main style={{ padding: "2rem" }}>
+    <main id="#popular" style={{ padding: "2rem" }}>
       <h1>Popular Movies</h1>
       <div
         style={{

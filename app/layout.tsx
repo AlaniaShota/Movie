@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed, Jost, Montserrat } from "next/font/google";
 import "./globals.css";
-import Header from "./componetnt/header";
+import Header from "./components/header";
+import SmoothScroll from "./components/smooth-scroll";
+import ScrollTopButton from "./components/ScrollTopButton";
 
 const jost = Jost({
   variable: "--font-jost",
@@ -16,7 +18,7 @@ const montserrat = Montserrat({
 const barlow = Barlow_Condensed({
   variable: "--font-barlow",
   subsets: ["latin"],
-  weight: ["500", "600", "700"], 
+  weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -35,7 +37,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${jost.variable} ${montserrat.variable} ${barlow.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col"><Header/>{children}</body>
+      <body className="min-h-full flex flex-col">
+        <SmoothScroll />
+        <Header />
+        {children}
+        <ScrollTopButton/>
+      </body>
     </html>
   );
 }
