@@ -1,0 +1,43 @@
+import axios from "axios";
+
+export type Movie = {
+  id: number;
+  title: string;
+  poster_path: string | null;
+  overview: string;
+  vote_average: number;
+};
+
+type PopularMoviesResponse = {
+  page: number;
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
+};
+
+export const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
+
+const tmdb = axios.create({
+  baseURL: "https://api.themoviedb.org/3",
+  params: {
+    api_key: process.env.TMDB_API_KEY,
+    language: "en-US",
+  },
+});
+
+export async function getPopularMovies(page = 1): Promise<Movie[]> {
+  try {
+    const { data } = await tmdb.get<PopularMoviesResponse>("/movie/popular", {
+      params: { page },
+    });
+    return data.results;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status;
+      const body = JSON.stringify(error.response?.data);
+      console.error("TMDB error:", status, body);
+      throw new Error(`TMDB has error ${status}: ${body}`);
+    }
+    throw error;
+  }
+}
