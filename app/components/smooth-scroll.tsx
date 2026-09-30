@@ -18,7 +18,7 @@ function ScrollToTop() {
 export default function SmoothScroll() {
   return (
     <>
-      <ReactLenis root options={{ lerp: 0.1, naiveDimensions: true }} />
+      <ReactLenis root options={{ lerp: 0.08, naiveDimensions: true }} />
       <ScrollToTop />
     </>
   );
