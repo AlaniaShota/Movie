@@ -1,15 +1,15 @@
-
 "use client";
 
+import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "motion/react";
 
 const items = [
   { name: "Home", href: "/" },
-  { name: "Popular Movies", href: "/popular" },
-  { name: "Trending", href: "/trending" },
+  { name: "Popular", href: "/popular" },
   { name: "Now Playing", href: "/now-playing" },
+  { name: "Top Rated", href: "/top-rated" },
+  { name: "Upcoming", href: "/upcoming" },
 ];
 
 export default function Navigation() {
@@ -17,10 +17,12 @@ export default function Navigation() {
 
   return (
     <nav>
-      <ul className="flex space-x-2">
+      <ul className="flex flex-wrap gap-2">
         {items.map((item) => {
           const isActive =
-            item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+            item.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(item.href);
 
           return (
             <li key={item.href} className="relative">

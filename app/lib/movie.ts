@@ -1,4 +1,3 @@
-// types/movie.ts
 export type Movie = {
   id: number;
   title: string;
@@ -7,7 +6,7 @@ export type Movie = {
   vote_average: number;
 };
 
-export type PopularMoviesResponse = {
+export type MoviesResponse = {
   page: number;
   results: Movie[];
   total_pages: number;
