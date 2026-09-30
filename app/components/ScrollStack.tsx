@@ -7,13 +7,11 @@ import {
 import { ScrollStackOptions, useScrollStack } from "../hook/useScrollStack";
 
 
+
 type ScrollStackProps = {
   children: ReactNode;
-
   className?: string;
-
   contentClassName?: string;
-
   options?: ScrollStackOptions;
 };
 
