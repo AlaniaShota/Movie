@@ -1,10 +1,15 @@
 import Image from "next/image";
-import { getMovies, IMAGE_BASE_URL, MovieCategory } from "../lib/tmdb";
-
+import Link from "next/link";
+import {
+  getMovies,
+  IMAGE_BASE_URL,
+  MovieCategory,
+} from "../lib/tmdb";
 
 type CardProps = {
   category?: MovieCategory;
   title?: string;
+  limit?: number;
 };
 
 const defaultTitles: Record<MovieCategory, string> = {
@@ -17,16 +22,38 @@ const defaultTitles: Record<MovieCategory, string> = {
 export default async function Card({
   category = "popular",
   title,
+  limit,
 }: CardProps) {
   const movies = await getMovies(category);
+
   const heading = title ?? defaultTitles[category];
 
+  const displayedMovies = limit
+    ? movies.slice(0, limit)
+    : movies;
+
   return (
-    <main id={category} className="mx-auto w-full max-w-7xl px-6 py-10">
-      <h1 className="mb-6 text-3xl font-bold text-brand-mist">{heading}</h1>
+    <section
+      id={category}
+      className="mx-auto w-full max-w-7xl px-6 py-10"
+    >
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-3xl font-bold text-brand-mist">
+          {heading}
+        </h2>
+
+        {limit && (
+          <Link
+            href={`/${category}`}
+            className="text-sm font-medium text-brand-gold transition hover:opacity-80"
+          >
+            View all →
+          </Link>
+        )}
+      </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {movies.map((movie) => (
+        {displayedMovies.map((movie) => (
           <article key={movie.id}>
             {movie.poster_path ? (
               <Image
@@ -40,15 +67,16 @@ export default async function Card({
               <div className="aspect-[2/3] rounded-lg bg-brand-helmet" />
             )}
 
-            <h2 className="mt-3 line-clamp-2 text-sm font-semibold text-brand-mist">
+            <h3 className="mt-3 line-clamp-2 text-sm font-semibold text-brand-mist">
               {movie.title}
-            </h2>
+            </h3>
+
             <p className="mt-1 text-sm text-brand-gold">
-              {movie.vote_average.toFixed(1)}
+              ⭐ {movie.vote_average.toFixed(1)}
             </p>
           </article>
         ))}
       </div>
-    </main>
+    </section>
   );
 }
