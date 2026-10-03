@@ -7,14 +7,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+type ResponsiveValue = number | ((width: number) => number);
+
 type ResponsiveSettings = {
   minWidth: number;
-  cardWidth?: number;
-  cardHeight?: number;
-  enterX: number | ((width: number) => number);
-  leaveX: number | ((width: number) => number);
+  cardWidth?: ResponsiveValue;
+  cardHeight?: ResponsiveValue;
+  enterX: ResponsiveValue;
+  leaveX: ResponsiveValue;
 };
-
 export type ScrollStackOptions = {
   itemSelector?: string;
 
@@ -92,10 +93,10 @@ export function useScrollStack(
 
       mobile: {
         minWidth: 0,
-        cardWidth: (width) => Math.min(width * 0.76, 330),
-        cardHeight: (width) => Math.min(window.innerHeight * 0.68, 540),
-        enterX: (width) => width * 0.72,
-        leaveX: (width) => -width * 0.58,
+        cardWidth: (width: number) => Math.min(width * 0.76, 330),
+        cardHeight: (width: number) => Math.min(window.innerHeight * 0.68, 540),
+        enterX: (width: number) => width * 0.72,
+        leaveX: (width: number) => -width * 0.58,
       },
     },
   } = options;
