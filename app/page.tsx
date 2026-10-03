@@ -1,9 +1,10 @@
-import MovieList from "./components/movieList";
+import MovieScrollStackList from "./components/movie/movieScrollStackList";
+import MovieList from "./components/movie/movieList";
 
 export default async function Home() {
   return (
     <>
-      <MovieList
+      <MovieScrollStackList
         category="popular"
         title="Popular Movies"
         limit={6}
@@ -13,19 +14,19 @@ export default async function Home() {
         category="now-playing"
         title="Now Playing"
         limit={6}
-        animation="stack"
+       
       />
       <MovieList
         category="top-rated"
         title="Top Rated"
         limit={6}
-        animation="stack"
+       
       />
       <MovieList
         category="upcoming"
         title="Upcoming Movies"
         limit={6}
-        animation="stack"
+       
       />
     </>
   );

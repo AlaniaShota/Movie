@@ -1,15 +1,8 @@
-import Image from "next/image";
-
-import {
-  getMovieById,
-  getMovies,
-  IMAGE_BASE_URL,
-  MovieCategory,
-} from "../lib/tmdb";
-
-import ScrollStack from "./ScrollStack";
-import AnimatedSectionHeader from "./AnimatedSectionHeader";
 import Link from "next/link";
+import AnimatedSectionHeader from "../AnimatedSectionHeader";
+import ScrollStack from "../ScrollStack";
+import Image from "next/image";
+import { getMovies, IMAGE_BASE_URL, MovieCategory } from "@/app/lib/tmdb";
 
 type MovieListProps = {
   category?: MovieCategory;
@@ -25,11 +18,10 @@ const defaultTitles: Record<MovieCategory, string> = {
   upcoming: "Upcoming Movies",
 };
 
-export default async function MovieList({
+export default async function MovieScrollStackList({
   category = "popular",
   title,
   limit,
-  animation = "none",
 }: MovieListProps) {
   const movies = await getMovies(category);
 
@@ -38,46 +30,6 @@ export default async function MovieList({
   const displayedMovies = limit ? movies.slice(0, limit) : movies;
 
   const seeAllHref = `/${category}`;
-
-  console.log(await getMovieById(550));
-  if (animation === "none") {
-    return (
-      <section id={category} className="mx-auto w-full max-w-7xl">
-        <div className="px-6 pt-10">
-          <AnimatedSectionHeader
-            title={heading}
-            href={limit ? seeAllHref : undefined}
-          />
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 px-6 pt-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-          {displayedMovies.map((movie) => (
-            <Link
-              key={movie.id}
-              href={`/movie/${movie.id}`}
-              className="relative block"
-            >
-              {movie.poster_path ? (
-                <Image
-                  src={`${IMAGE_BASE_URL}/w500${movie.poster_path}`}
-                  alt={movie.title}
-                  width={500}
-                  height={750}
-                  className="h-auto w-full rounded-lg object-cover"
-                />
-              ) : (
-                <div className="aspect-2/3 rounded-lg bg-brand-helmet" />
-              )}
-
-              <h3 className="mt-3 text-sm font-semibold text-brand-mist">
-                {movie.title}
-              </h3>
-            </Link>
-          ))}
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id={category} className="relative w-full">
@@ -103,8 +55,6 @@ export default async function MovieList({
           decorationLeaveX: -80,
         }}
       >
-        {/* HEADER */}
-
         <div className="absolute left-6 right-6 top-8 z-200 md:left-12 md:right-12 md:top-10">
           <AnimatedSectionHeader
             title={heading}
@@ -112,20 +62,16 @@ export default async function MovieList({
           />
         </div>
 
-        {/* BACKGROUND */}
-
         <div className="absolute inset-0">
           <div className="absolute left-1/2 top-1/2 h-175 w-175 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-sky/10 blur-[140px]" />
 
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04),transparent_55%)]" />
         </div>
 
-        {/* MOVIES */}
-
         {displayedMovies.map((movie, index) => (
           <Link
-              key={movie.id}
-              href={`/movie/${movie.id}`}
+            key={movie.id}
+            href={`/movie/${movie.id}`}
             data-scroll-item
             className="
                 relative
@@ -133,8 +79,6 @@ export default async function MovieList({
                 rounded-2xl
               "
           >
-            {/* BIG NUMBER */}
-
             <div
               data-scroll-decoration
               className="
@@ -174,7 +118,6 @@ export default async function MovieList({
               )}
 
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-
 
               <div className="absolute bottom-0 left-0 right-0 z-20 p-6 md:p-8">
                 <div className="mb-2 flex items-center gap-3">

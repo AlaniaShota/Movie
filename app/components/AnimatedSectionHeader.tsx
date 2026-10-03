@@ -31,7 +31,8 @@ export default function AnimatedSectionHeader({
       <motion.h2
         initial={{
           opacity: 0,
-          x: -30,
+          x: -30, 
+
         }}
         animate={{
           opacity: 1,
@@ -42,7 +43,7 @@ export default function AnimatedSectionHeader({
           delay: 0.1,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="text-3xl font-bold text-brand-mist md:text-5xl"
+        className="text-lg font-bold text-brand-mist md:text-5xl"
       >
         {title}
       </motion.h2>
@@ -78,7 +79,7 @@ export default function AnimatedSectionHeader({
               hover:text-brand-mist
             "
           >
-            <span>See all</span>
+            <span className="text-lg">See all</span>
 
             <motion.span
               initial={{ x: 0 }}

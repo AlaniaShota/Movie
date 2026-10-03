@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { isMovieCategory } from "../lib/tmdb";
-import MovieList from "../components/movieList";
+import MovieList from "../components/movie/movieList";
 
 type CategoryPageProps = {
   params: Promise<{ category: string }>;
