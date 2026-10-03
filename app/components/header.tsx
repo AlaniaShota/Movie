@@ -1,4 +1,5 @@
 import Navigation from "./navigation";
+import { IoIosSearch } from "react-icons/io";
 
 export default function Header() {
   return (
@@ -8,7 +9,7 @@ export default function Header() {
         <h1 className=" cursor-default text-brand-red text-2xl font-medium">MovieDB</h1>
         <Navigation />
       </div>
-      <h1>testin</h1>
+      <IoIosSearch className="text-2xl"/>
     </header>
   );
 }

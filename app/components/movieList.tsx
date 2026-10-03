@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import {
+  getMovieById,
   getMovies,
   IMAGE_BASE_URL,
   MovieCategory,
@@ -8,6 +9,7 @@ import {
 
 import ScrollStack from "./ScrollStack";
 import AnimatedSectionHeader from "./AnimatedSectionHeader";
+import Link from "next/link";
 
 type MovieListProps = {
   category?: MovieCategory;
@@ -31,22 +33,16 @@ export default async function MovieList({
 }: MovieListProps) {
   const movies = await getMovies(category);
 
-  const heading =
-    title ?? defaultTitles[category];
+  const heading = title ?? defaultTitles[category];
 
-  const displayedMovies = limit
-    ? movies.slice(0, limit)
-    : movies;
+  const displayedMovies = limit ? movies.slice(0, limit) : movies;
 
   const seeAllHref = `/${category}`;
 
-
+  console.log(await getMovieById(550));
   if (animation === "none") {
     return (
-      <section
-        id={category}
-        className="mx-auto w-full max-w-7xl"
-      >
+      <section id={category} className="mx-auto w-full max-w-7xl">
         <div className="px-6 pt-10">
           <AnimatedSectionHeader
             title={heading}
@@ -56,9 +52,10 @@ export default async function MovieList({
 
         <div className="grid grid-cols-2 gap-4 px-6 pt-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {displayedMovies.map((movie) => (
-            <article
+            <Link
               key={movie.id}
-              className="relative"
+              href={`/movie/${movie.id}`}
+              className="relative block"
             >
               {movie.poster_path ? (
                 <Image
@@ -72,10 +69,10 @@ export default async function MovieList({
                 <div className="aspect-2/3 rounded-lg bg-brand-helmet" />
               )}
 
-              <h3 className="mt-3 line-clamp-2 text-sm font-semibold text-brand-mist">
+              <h3 className="mt-3 text-sm font-semibold text-brand-mist">
                 {movie.title}
               </h3>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
@@ -83,18 +80,13 @@ export default async function MovieList({
   }
 
   return (
-    <section
-      id={category}
-      className="relative w-full"
-    >
+    <section id={category} className="relative w-full">
       <ScrollStack
         className="bg-brand-navy"
         options={{
-          itemSelector:
-            "[data-scroll-item]",
+          itemSelector: "[data-scroll-item]",
 
-          decorationSelector:
-            "[data-scroll-decoration]",
+          decorationSelector: "[data-scroll-decoration]",
 
           scrollPerItem: 700,
 
@@ -130,22 +122,22 @@ export default async function MovieList({
 
         {/* MOVIES */}
 
-        {displayedMovies.map(
-          (movie, index) => (
-            <article
+        {displayedMovies.map((movie, index) => (
+          <Link
               key={movie.id}
-              data-scroll-item
-              className="
+              href={`/movie/${movie.id}`}
+            data-scroll-item
+            className="
                 relative
                 overflow-visible
                 rounded-2xl
               "
-            >
-              {/* BIG NUMBER */}
+          >
+            {/* BIG NUMBER */}
 
-              <div
-                data-scroll-decoration
-                className="
+            <div
+              data-scroll-decoration
+              className="
                   pointer-events-none
                   absolute
                   -left-24
@@ -159,65 +151,58 @@ export default async function MovieList({
                   md:-left-32
                   md:text-[260px]
                 "
-              >
-                {String(index + 1).padStart(
-                  2,
-                  "0",
-                )}
-              </div>
+            >
+              {String(index + 1).padStart(2, "0")}
+            </div>
 
-              {/* POSTER */}
-
-              <div className="relative z-10 h-full w-full overflow-hidden rounded-2xl bg-brand-helmet shadow-2xl">
-                {movie.poster_path ? (
-                  <Image
-                    src={`${IMAGE_BASE_URL}/w780${movie.poster_path}`}
-                    alt={movie.title}
-                    fill
-                    priority={index === 0}
-                    sizes="
+            <div className="relative z-10 h-full w-full overflow-hidden rounded-2xl bg-brand-helmet shadow-2xl">
+              {movie.poster_path ? (
+                <Image
+                  src={`${IMAGE_BASE_URL}/w780${movie.poster_path}`}
+                  alt={movie.title}
+                  fill
+                  priority={index === 0}
+                  sizes="
                       (max-width: 767px) 76vw,
                       (max-width: 1023px) 430px,
                       520px
                     "
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="h-full w-full bg-brand-helmet" />
-                )}
+                  className="object-cover"
+                />
+              ) : (
+                <div className="h-full w-full bg-brand-helmet" />
+              )}
 
-                {/* GRADIENT */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
 
-                {/* INFO */}
+              <div className="absolute bottom-0 left-0 right-0 z-20 p-6 md:p-8">
+                <div className="mb-2 flex items-center gap-3">
+                  <span className="text-sm font-bold text-brand-gold">
+                    #{index + 1}
+                  </span>
 
-                <div className="absolute bottom-0 left-0 right-0 z-20 p-6 md:p-8">
-                  <div className="mb-2 flex items-center gap-3">
-                    <span className="text-sm font-bold text-brand-gold">
-                      #{index + 1}
-                    </span>
+                  <span className="h-px w-8 bg-white/30" />
 
-                    <span className="h-px w-8 bg-white/30" />
-
-                    <span className="text-xs uppercase tracking-[0.2em] text-white/50">
-                      {category}
-                    </span>
-                  </div>
-
-                  <h3 className="text-3xl font-black leading-tight text-white md:text-5xl">
-                    {movie.title}
-                  </h3>
-
-                  <p className="mt-3 text-sm text-white/50">
-                    Rating:{" "}
-                  <span className="text-brand-gold">{movie.vote_average.toFixed(1)}</span>
-                  </p>
+                  <span className="text-xs uppercase tracking-[0.2em] text-white/50">
+                    {category}
+                  </span>
                 </div>
+
+                <h3 className="text-3xl font-black leading-tight text-white md:text-5xl">
+                  {movie.title}
+                </h3>
+
+                <p className="mt-3 text-sm text-white/50">
+                  Rating:{" "}
+                  <span className="text-brand-gold">
+                    {movie.vote_average.toFixed(1)}
+                  </span>
+                </p>
               </div>
-            </article>
-          ),
-        )}
+            </div>
+          </Link>
+        ))}
       </ScrollStack>
     </section>
   );

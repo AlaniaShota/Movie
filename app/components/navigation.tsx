@@ -28,7 +28,7 @@ export default function Navigation() {
             <li key={item.href} className="relative">
               <Link
                 href={item.href}
-                className={`relative z-10 block rounded-full px-4 py-1.5 transition-colors duration-200 ${
+                className={`relative z-10 block rounded-full px-4 py-1.5 transition-colors duration-200 text-xl ${
                   isActive ? "text-white" : "hover:text-brand-gold"
                 }`}
               >

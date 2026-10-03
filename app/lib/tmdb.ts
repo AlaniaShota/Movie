@@ -56,7 +56,33 @@ export async function getMovies(
   return data.results;
 }
 
-// Оставляем старое имя функции, чтобы существующий код не ломался.
 export async function getPopularMovies(page = 1): Promise<Movie[]> {
   return getMovies("popular", page);
+}
+
+export async function getMovieById(id: number | string): Promise<Movie> {
+  const apiKey = process.env.TMDB_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("TMDB_API_KEY is not configured");
+  }
+
+  const url = new URL(`https://api.themoviedb.org/3/movie/${id}`);
+
+  url.searchParams.set("api_key", apiKey);
+  url.searchParams.set("language", "en-US");
+
+  const response = await fetch(url, {
+    next: { revalidate: 3600 },
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+
+    console.error("TMDB error:", response.status, body);
+
+    throw new Error(`TMDB has error ${response.status}`);
+  }
+
+  return (await response.json()) as Movie;
 }
