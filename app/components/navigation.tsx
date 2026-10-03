@@ -29,7 +29,7 @@ export default function Navigation() {
               <Link
                 href={item.href}
                 className={`relative z-10 block rounded-full px-4 py-1.5 transition-colors duration-200 ${
-                  isActive ? "text-brand-navy" : "hover:text-brand-gold"
+                  isActive ? "text-white" : "hover:text-brand-gold"
                 }`}
               >
                 {item.name}

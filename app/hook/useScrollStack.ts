@@ -16,75 +16,28 @@ type ResponsiveSettings = {
 };
 
 export type ScrollStackOptions = {
-  /*
-   * Какие элементы считать карточками.
-   *
-   * Например:
-   * "[data-scroll-item]"
-   *
-   * или:
-   * ".project-card"
-   */
   itemSelector?: string;
 
-  /*
-   * Необязательный элемент внутри карточки,
-   * который тоже будет анимироваться.
-   *
-   * Например:
-   * "[data-scroll-number]"
-   */
   decorationSelector?: string;
 
-  /*
-   * Скорость scrub.
-   */
   scrub?: number;
 
-  /*
-   * Сколько px scroll нужно на одну карточку.
-   */
   scrollPerItem?: number;
 
-  /*
-   * Сколько карточек должно быть в анимации.
-   */
   itemCount?: number;
 
-  /*
-   * Начальный scale для следующих карточек.
-   */
   initialScale?: number;
 
-  /*
-   * Начальная opacity следующих карточек.
-   */
   initialOpacity?: number;
 
-  /*
-   * Scale предыдущей карточки после ухода.
-   */
   leavingScale?: number;
 
-  /*
-   * Opacity предыдущей карточки после ухода.
-   */
   leavingOpacity?: number;
 
-  /*
-   * Если true — секция фиксируется через pin.
-   */
   pin?: boolean;
 
-  /*
-   * На сколько уезжает дополнительный элемент
-   * внутри карточки.
-   */
   decorationLeaveX?: number;
 
-  /*
-   * Desktop / tablet / mobile.
-   */
   responsive?: {
     desktop?: ResponsiveSettings;
     tablet?: ResponsiveSettings;
@@ -202,10 +155,6 @@ export function useScrollStack(
 
           const leaveX = getValue(settings.leaveX, width);
 
-          /*
-           * Карточки автоматически
-           * становятся абсолютными.
-           */
           gsap.set(items, {
             position: "absolute",
             left: "50%",
@@ -214,10 +163,6 @@ export function useScrollStack(
             yPercent: -50,
           });
 
-          /*
-           * Размеры карточек,
-           * если они переданы.
-           */
           if (cardWidth !== undefined || cardHeight !== undefined) {
             gsap.set(items, {
               ...(cardWidth !== undefined ? { width: cardWidth } : {}),
@@ -226,9 +171,6 @@ export function useScrollStack(
             });
           }
 
-          /*
-           * Начальное состояние.
-           */
           items.forEach((item, index) => {
             gsap.set(item, {
               x: index === 0 ? 0 : enterX + index * 35,
@@ -241,9 +183,6 @@ export function useScrollStack(
             });
           });
 
-          /*
-           * Timeline.
-           */
           const timeline = gsap.timeline({
             defaults: {
               ease: "none",
@@ -266,10 +205,6 @@ export function useScrollStack(
             },
           });
 
-          /*
-           * Переключаем карточки
-           * одну за другой.
-           */
           for (let index = 1; index < items.length; index++) {
             const previous = items[index - 1];
 
@@ -281,10 +216,6 @@ export function useScrollStack(
             const currentDecoration =
               current.querySelector<HTMLElement>(decorationSelector);
 
-            /*
-             * Предыдущая карточка
-             * уезжает влево.
-             */
             timeline.to(
               previous,
               {
@@ -296,10 +227,6 @@ export function useScrollStack(
               index - 1,
             );
 
-            /*
-             * Новая карточка
-             * становится главной.
-             */
             timeline.to(
               current,
               {
@@ -312,10 +239,6 @@ export function useScrollStack(
               index - 1,
             );
 
-            /*
-             * Необязательная
-             * декоративная часть.
-             */
             if (previousDecoration) {
               timeline.to(
                 previousDecoration,
@@ -342,10 +265,6 @@ export function useScrollStack(
               );
             }
           }
-
-          /*
-           * Cleanup для текущего media query.
-           */
           return () => {
             timeline.kill();
           };
@@ -357,9 +276,6 @@ export function useScrollStack(
       };
     }, container);
 
-    /*
-     * Полный cleanup.
-     */
     return () => {
       ctx.revert();
     };

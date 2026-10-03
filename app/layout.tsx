@@ -37,11 +37,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${jost.variable} ${montserrat.variable} ${barlow.variable}  antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="flex flex-col w-11/12 m-auto gap-6 my-6 ">
         <SmoothScroll />
         <Header />
         {children}
-        <ScrollTopButton/>
+        <ScrollTopButton />
       </body>
     </html>
   );
